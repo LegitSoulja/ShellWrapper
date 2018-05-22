@@ -30,11 +30,6 @@ namespace ShellWrapper
             if (DCEx == IntPtr.Zero)
                 throw new Exception("Could not get DCEx");
 
-            draw(new Action<Graphics>((d) => {
-                d.FillRectangle(new SolidBrush(Color.Red), 0, 0, 500, 500);
-            }));
-
-
         }
 
         public void draw(Action<Graphics> a)
@@ -99,7 +94,6 @@ namespace ShellWrapper
         {
             UIntPtr result;
             W32.SendMessageTimeout(W32.FindWindow("Progman", null), address, new UIntPtr(0), IntPtr.Zero, W32.SendMessageTimeoutFlags.SMTO_NORMAL, 1000, out result);
-            Console.WriteLine(result.ToString());
         }
 
     }

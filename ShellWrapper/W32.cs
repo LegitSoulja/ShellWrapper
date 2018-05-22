@@ -217,6 +217,9 @@ namespace ShellWrapper
             });
         }
 
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern Int32 SystemParametersInfo(UInt32 uiAction, UInt32 uiParam, String pvParam, UInt32 fWinIni);
         public static UInt32 SPI_SETDESKWALLPAPER = 20;
