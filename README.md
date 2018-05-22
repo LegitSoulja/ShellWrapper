@@ -34,3 +34,5 @@ wrapper.drawWindow(System.Windows.Window)
 Note: When setting a parent form/window, keyboard/mouse events will not work and will need to use low level events as,
 - WH_KEYBOARD_LL
 - WH_MOUSE_LL
+
+Useful resources for User32 | [PInvoke.net](https://www.pinvoke.net/default.aspx)
