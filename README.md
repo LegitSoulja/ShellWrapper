@@ -1,6 +1,6 @@
 # ShellWrapper
 
-Want to draw behind desktop icons?
+Want to draw behind desktop icons, and on top of wallpaper?
 
 ```cs
 
