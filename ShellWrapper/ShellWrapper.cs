@@ -11,46 +11,45 @@ using Microsoft.Win32;
 namespace ShellWrapper
 {
 
-    public static class ShellWrapper
+    public class ShellWrapper
     {
 
-        public static void Debug(string[] args)
+        public IntPtr worker { get; private set; }
+        public IntPtr DCEx { get; private set; }
+
+        public ShellWrapper()
         {
+            SendMessage(0x052C);
+            worker = GetShellWorker();
+            DCEx = W32.GetDCEx(worker, IntPtr.Zero, (W32.DeviceContextValues)0x0403);
 
-            SendMessage(0x052C); // activate workerw process on shell
-            IntPtr workerw = GetShellWorker();
-            Console.WriteLine(workerw.ToString());
-            Console.WriteLine("Drawing will begin after a key press");
-            Console.ReadKey();
-            drawTest(workerw);
-            Console.WriteLine("Did it work? :). Press enter to exit now.");
-            Console.ReadLine();
+            if (worker == IntPtr.Zero)
+                throw new Exception("Could not get workerw");
 
-            clearGraphics(workerw);
+            if (DCEx == IntPtr.Zero)
+                throw new Exception("Could not get DCEx");
 
-            Console.ReadKey();
-            Environment.Exit(0);
+            draw(new Action<Graphics>((d) => {
+                d.FillRectangle(new SolidBrush(Color.Red), 0, 0, 500, 500);
+            }));
+
 
         }
 
-        private static void drawTest(IntPtr worker)
+        public void draw(Action<Graphics> a)
         {
-            IntPtr dc = W32.GetDCEx(worker, IntPtr.Zero, (W32.DeviceContextValues)0x403);
-
-            if (dc != IntPtr.Zero)
+            if(DCEx != IntPtr.Zero)
             {
-                using(Graphics g = Graphics.FromHdc(dc))
+                using(Graphics g = Graphics.FromHdc(DCEx))
                 {
-                    g.FillRectangle(new SolidBrush(Color.Red), 0, 0, 500, 500);
+                    a(g);
                 }
-
-                W32.ReleaseDC(worker, dc);
-
+                W32.ReleaseDC(worker, DCEx);
             }
         }
 
 
-        public static void clearGraphics(IntPtr worker)
+        public void clearGraphics()
         {
 
             // W32.RedrawWindow(worker, IntPtr.Zero, IntPtr.Zero, W32.RedrawWindowFlags.Invalidate);
@@ -67,7 +66,7 @@ namespace ShellWrapper
 
         }
 
-        public static IntPtr GetShellWorker()
+        private IntPtr GetShellWorker()
         {
             IntPtr worker = IntPtr.Zero;
             W32.EnumWindows(new W32.EnumWindowsProc((th, tph) => {
@@ -86,7 +85,7 @@ namespace ShellWrapper
             return worker;
         }
 
-        public static void SendMessage(uint address)
+        private static void SendMessage(uint address)
         {
             UIntPtr result;
             W32.SendMessageTimeout(W32.FindWindow("Progman", null), address, new UIntPtr(0), IntPtr.Zero, W32.SendMessageTimeoutFlags.SMTO_NORMAL, 1000, out result);
