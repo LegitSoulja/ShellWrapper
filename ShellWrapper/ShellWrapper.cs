@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows;
 using Microsoft.Win32;
+using System.Windows.Interop;
 
 namespace ShellWrapper
 {
@@ -47,7 +48,16 @@ namespace ShellWrapper
                 W32.ReleaseDC(worker, DCEx);
             }
         }
+        
+        public void drawForm(System.Windows.Forms.Form form)
+        {
+            W32.SetParent(form.Handle, worker);
+        }
 
+        public void drawWindow(System.Windows.Window window)
+        {
+            W32.SetParent(new WindowInteropHelper(window).Handle, worker);
+        }
 
         public void clearGraphics()
         {
