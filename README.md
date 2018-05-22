@@ -15,3 +15,16 @@ wrapper.draw(new Action<Graphics>((d) => {
 wrapper.clearGraphics();
 
 ```
+
+Want to set a form?
+
+```cs
+
+wrapper.drawForm(System.Windows.Forms.Form);
+```
+
+Want to set a window (WPF)
+
+```cs
+wrapper.drawWindow(System.Windows.Window)
+```
