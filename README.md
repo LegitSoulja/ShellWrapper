@@ -2,7 +2,7 @@
 
 Want to draw behind desktop icons, and on top of wallpaper?
 
-#### Windows 8 +
+#### Windows 8+, 4.5.2 .net Framework
 
 ```cs
 
