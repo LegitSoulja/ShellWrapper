@@ -30,3 +30,7 @@ Want to set a window (WPF)
 ```cs
 wrapper.drawWindow(System.Windows.Window)
 ```
+
+Note: When setting a parent form/window, keyboard/mouse events will not work and will need to use low level events as,
+- WH_KEYBOARD_LL
+- WH_MOUSE_LL
