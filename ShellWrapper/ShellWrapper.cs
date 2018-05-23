@@ -20,8 +20,19 @@ namespace ShellWrapper
 
         public ShellWrapper()
         {
+
+            Version v = System.Environment.OSVersion.Version;
             SendMessage(0x052C);
-            worker = GetShellWorker();
+
+            if (v.Major == 6 && v.Minor == 1)
+            {
+                worker = W32.FindWindow("Progman", null); ;
+            }
+            else
+            {
+                worker = GetShellWorker();
+            }
+
             DCEx = W32.GetDCEx(worker, IntPtr.Zero, (W32.DeviceContextValues)0x0403);
 
             if (worker == IntPtr.Zero)
@@ -52,6 +63,11 @@ namespace ShellWrapper
         public void drawWindow(System.Windows.Window window)
         {
             W32.SetParent(new WindowInteropHelper(window).Handle, worker);
+        }
+
+        public void drawHandle(IntPtr handle)
+        {
+            W32.SetParent(handle, worker);
         }
 
         public void clearGraphics()
