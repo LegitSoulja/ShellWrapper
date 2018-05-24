@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShellWrapper
 {
-    class Example
+    class Example : IDisposable
     {
 
         private ShellWrapper wrapper;
@@ -25,6 +25,9 @@ namespace ShellWrapper
             wrapper.clearGraphics();
         }
 
-
+        public void Dispose()
+        {
+            wrapper = null;
+        }
     }
 }
